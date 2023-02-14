@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            min-height: 100vh;
+            min-width: 100vw;
+            background-color: #000;
+            font-size: 16rem;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+
+        .ilovu:not(.finished):after {
+            content: '|';
+            animation: palito 0.5s infinite ease;
+        }
+
+        .ilovu.finished:after {
+            content: '|';
+            /* animation: palito 0.5s infinite ease; */
+            transition: opacity 0.5s ease;
+            opacity: 0;
+        }
+
+        @keyframes palito {
+            0% {
+                opacity: 0;
+            }
+
+            75% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes cat {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .rainbow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            /* width: 0; */
+            bottom: 0;
+            background: linear-gradient(90deg,
+                    rgba(255, 0, 0, 1) 0%,
+                    rgba(255, 154, 0, 1) 10%,
+                    rgba(208, 222, 33, 1) 20%,
+                    rgba(79, 220, 74, 1) 30%,
+                    rgba(63, 218, 216, 1) 40%,
+                    rgba(47, 201, 226, 1) 50%,
+                    rgba(28, 127, 238, 1) 60%,
+                    rgba(95, 21, 242, 1) 70%,
+                    rgba(186, 12, 248, 1) 80%,
+                    rgba(251, 7, 217, 1) 90%,
+                    rgba(255, 0, 0, 1) 100%);
+            mix-blend-mode: darken;
+            animation: rainbow 1s ease 3s;
+            animation-fill-mode: forwards;
+        }
+
+        .cat {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            opacity: 0;
+            animation-name: cat;
+            animation-delay: 4s;
+            animation-duration: 0.5s;
+            animation-fill-mode: forwards;
+            animation-timing-function: ease;
+        }
+
+        @keyframes rainbow {
+            0% {
+                width: 0;
+            }
+
+            100% {
+                width: 100vw;
+            }
+        }
+    </style>
+    <title>Saint Valentine</title>
+</head>
+
+<body x-data="app">
+    <div class="rainbow">
+
+    </div>
+    <div class="ilovu" x-text="getText()">
+    </div>
+
+    <img class="cat" src="./cat.gif" alt="">
+
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('app', () => ({
+                current: '',
+                text: 'I love you.',
+                init() {
+                    const interval = () => {
+                        this.current = this.text.substring(0, this.current.length + 1);
+                        if (this.current.length >= this.text.length) {
+                            clearInterval(interval);
+                            document.querySelector('.ilovu').classList.add('finished');
+                        }
+                    };
+                    setInterval(interval, 200);
+                },
+                getText() {
+                    return this.current;
+                }
+            }));
+        });
+    </script>
+</body>
+
+</html>
